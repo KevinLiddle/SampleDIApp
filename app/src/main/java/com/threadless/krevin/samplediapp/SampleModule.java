@@ -4,12 +4,15 @@ import com.threadless.krevin.conversations.AskAboutTheirDay;
 import com.threadless.krevin.conversations.Greeting;
 import com.threadless.krevin.conversations.Howdy;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
-@Module( injects = GreetingActivity.class, library=true )
+@Module
 public class SampleModule {
     @Provides
+    @Singleton
     public Greeting provideGreeting() {
         return new Howdy();
     }

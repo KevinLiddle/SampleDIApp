@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
@@ -23,8 +24,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(path: ':conversations')
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.squareup.dagger:dagger:1.2.5'
-    compile 'com.squareup.dagger:dagger-compiler:1.2.5'
+    compile 'com.google.dagger:dagger:2.2'
+    apt 'com.google.dagger:dagger-compiler:2.2'
+    testApt 'com.google.dagger:dagger-compiler:2.2'
+    provided 'javax.annotation:jsr250-api:1.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.0.54-beta'
     testCompile 'org.robolectric:robolectric:3.0'

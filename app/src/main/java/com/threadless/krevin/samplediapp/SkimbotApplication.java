@@ -2,30 +2,26 @@ package com.threadless.krevin.samplediapp;
 
 import android.app.Application;
 
-import dagger.ObjectGraph;
+import javax.inject.Singleton;
+
+import dagger.Component;
 
 public class SkimbotApplication extends Application {
-    private ObjectGraph mGraph;
+    private ApplicationComponent mComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        getObjectGraph();
+        mComponent = DaggerSkimbotApplication_ApplicationComponent.builder().sampleModule(new SampleModule()).build();
     }
 
-    protected ObjectGraph buildObjectGraph() {
-        return ObjectGraph.create(new SampleModule());
+    public ApplicationComponent component() {
+        return mComponent;
     }
 
-    public void inject(Object object) {
-        mGraph.inject(object);
+    @Singleton
+    @Component(modules = SampleModule.class)
+    public interface ApplicationComponent {
+        void inject(GreetingActivity activity);
     }
-
-    protected ObjectGraph getObjectGraph() {
-        if (mGraph == null) {
-            mGraph = buildObjectGraph();
-        }
-        return mGraph;
-    }
-
 }

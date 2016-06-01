@@ -15,9 +15,9 @@ public class GreetingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSkimbotApplication().component().inject(this);
         setContentView(R.layout.activity_main);
         TextView view = (TextView) findViewById(R.id.greeting_text);
-        String greeting = mGreeting.formulate();
-        view.setText(greeting);
+        view.setText(mGreeting.formulate());
     }
 }

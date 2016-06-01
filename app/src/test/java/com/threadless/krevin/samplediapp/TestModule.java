@@ -3,20 +3,22 @@ package com.threadless.krevin.samplediapp;
 import com.threadless.krevin.conversations.AskAboutTheirDay;
 import com.threadless.krevin.conversations.Greeting;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@Module(
-        injects = GreetingActivityTest.class,
-        library = true,
-        overrides = true
-)
+@Module
 public class TestModule {
     @Provides
+    @Singleton
     public Greeting provideGreeting() {
-        return mock(Greeting.class);
+        Greeting mock = mock(Greeting.class);
+        when(mock.formulate()).thenReturn("sheisse");
+        return mock;
     }
 
     @Provides
