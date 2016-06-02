@@ -18,6 +18,7 @@ public class SampleModule {
     }
 
     @Provides
+    @Singleton
     public AskAboutTheirDay provideAskAboutTheirDay() {
         return new AskAboutTheirDay();
     }

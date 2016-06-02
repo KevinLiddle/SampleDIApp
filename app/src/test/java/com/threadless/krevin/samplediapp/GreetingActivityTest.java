@@ -11,6 +11,9 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.util.ActivityController;
+
+import javax.inject.Inject;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -21,19 +24,21 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class GreetingActivityTest {
 
-    private Greeting mGreeting;
+    @Inject
+    Greeting mGreeting;
+    private ActivityController<GreetingActivity> activityController;
 
     @Before
     public void setUp() {
-        TestSkimbotApplication application = (TestSkimbotApplication) RuntimeEnvironment.application;
-//        mGreeting = application.getObjectGraph().get(GreetingActivity.class).mGreeting;
+        activityController = Robolectric.buildActivity(GreetingActivity.class);
+        ((TestSkimbotApplication) RuntimeEnvironment.application).component().inject(this);
     }
 
     @Test
     public void onCreateFormulatesAGreeting() {
-//        when(mGreeting.formulate()).thenReturn("What did you say to me?");
+        when(mGreeting.formulate()).thenReturn("What did you say to me?");
 
-        GreetingActivity activity = Robolectric.buildActivity(GreetingActivity.class).create().get();
+        GreetingActivity activity = activityController.create().get();
         TextView view = (TextView) activity.findViewById(R.id.greeting_text);
 
         assertThat(view.getText().toString(), is(equalTo("What did you say to me?")));
@@ -41,9 +46,9 @@ public class GreetingActivityTest {
 
     @Test
     public void wat() {
-//        when(mGreeting.formulate()).thenReturn("nothing");
+        when(mGreeting.formulate()).thenReturn("nothing");
 
-        GreetingActivity activity = Robolectric.buildActivity(GreetingActivity.class).create().get();
+        GreetingActivity activity = activityController.create().get();
         TextView view = (TextView) activity.findViewById(R.id.greeting_text);
 
         assertThat(view.getText().toString(), is(equalTo("nothing")));

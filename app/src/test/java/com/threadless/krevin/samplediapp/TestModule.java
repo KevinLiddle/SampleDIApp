@@ -22,6 +22,7 @@ public class TestModule {
     }
 
     @Provides
+    @Singleton
     public AskAboutTheirDay provideAskAboutTheirDay() {
         return mock(AskAboutTheirDay.class);
     }

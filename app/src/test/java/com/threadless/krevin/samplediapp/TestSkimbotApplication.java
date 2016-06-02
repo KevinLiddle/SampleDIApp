@@ -14,13 +14,13 @@ public class TestSkimbotApplication extends SkimbotApplication {
     }
 
     @Override
-    public ApplicationComponent component() {
+    public TestApplicationComponent component() {
         return mComponent;
     }
 
     @Singleton
     @Component(modules = TestModule.class)
     public interface TestApplicationComponent extends ApplicationComponent {
-        void inject(GreetingActivity activity);
+        void inject(GreetingActivityTest test);
     }
 }
