@@ -1,6 +1,5 @@
 package com.threadless.krevin.samplediapp;
 
-import com.threadless.krevin.conversations.AskAboutTheirDay;
 import com.threadless.krevin.conversations.Greeting;
 import com.threadless.krevin.conversations.Howdy;
 
@@ -15,11 +14,5 @@ public class SampleModule {
     @Singleton
     public Greeting provideGreeting() {
         return new Howdy();
-    }
-
-    @Provides
-    @Singleton
-    public AskAboutTheirDay provideAskAboutTheirDay() {
-        return new AskAboutTheirDay();
     }
 }

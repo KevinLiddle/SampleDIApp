@@ -20,21 +20,21 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class GreetingActivityTest {
+public class GreetingActivityTest extends BaseRobolectricTest {
 
     private ActivityController<GreetingActivity> activityController;
-    private Greeting greeting = mock(Greeting.class);
-
-    @ModuleOverride
-    protected SampleModule override = new SampleModule() {
-        @Override
-        public Greeting provideGreeting() {
-            return greeting;
-        }
-    };
+    private Greeting greeting;
 
     @Before
     public void setUp() {
+        greeting = mock(Greeting.class);
+        SampleModule sampleModule = new SampleModule() {
+            @Override
+            public Greeting provideGreeting() {
+                return greeting;
+            }
+        };
+        getApplication().getComponentBuilder().sampleModule(sampleModule);
         activityController = Robolectric.buildActivity(GreetingActivity.class);
     }
 

@@ -3,6 +3,7 @@ package com.threadless.krevin.samplediapp;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.threadless.krevin.conversations.AskAboutTheirDay;
 import com.threadless.krevin.conversations.Greeting;
 
 import javax.inject.Inject;
@@ -11,6 +12,9 @@ public class GreetingActivity extends BaseActivity {
 
     @Inject
     Greeting mGreeting;
+
+    @Inject
+    AskAboutTheirDay askAboutTheirDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
