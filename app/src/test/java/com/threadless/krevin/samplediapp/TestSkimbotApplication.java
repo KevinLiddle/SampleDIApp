@@ -1,26 +1,47 @@
 package com.threadless.krevin.samplediapp;
 
-import javax.inject.Singleton;
+import org.robolectric.TestLifecycleApplication;
 
-import dagger.Component;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
-public class TestSkimbotApplication extends SkimbotApplication {
-    private TestApplicationComponent mComponent;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mComponent = DaggerTestSkimbotApplication_TestApplicationComponent.builder().testModule(new TestModule()).build();
-    }
+public class TestSkimbotApplication extends SkimbotApplication implements TestLifecycleApplication {
+    private SampleModule mModuleOverride;
 
     @Override
-    public TestApplicationComponent component() {
+    public ApplicationComponent component() {
+        if (mComponent == null) {
+            mComponent = DaggerSkimbotApplication_ApplicationComponent.builder().sampleModule(getModule()).build();
+        }
         return mComponent;
     }
 
-    @Singleton
-    @Component(modules = TestModule.class)
-    public interface TestApplicationComponent extends ApplicationComponent {
-        void inject(GreetingActivityTest test);
+    @Override
+    public void beforeTest(Method method) {
+    }
+
+    @Override
+    public void prepareTest(Object test) {
+        for (Field f : test.getClass().getDeclaredFields()) {
+            if (f.isAnnotationPresent(ModuleOverride.class)) {
+                try {
+                    mModuleOverride = (SampleModule) f.get(test);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void afterTest(Method method) {
+    }
+
+    private SampleModule getModule() {
+        if (mModuleOverride == null) {
+            return new SampleModule();
+        }
+
+        return mModuleOverride;
     }
 }

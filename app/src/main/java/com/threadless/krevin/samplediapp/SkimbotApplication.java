@@ -7,15 +7,12 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 public class SkimbotApplication extends Application {
-    private ApplicationComponent mComponent;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mComponent = DaggerSkimbotApplication_ApplicationComponent.builder().sampleModule(new SampleModule()).build();
-    }
+    protected ApplicationComponent mComponent;
 
     public ApplicationComponent component() {
+        if (mComponent == null) {
+            mComponent = DaggerSkimbotApplication_ApplicationComponent.builder().sampleModule(new SampleModule()).build();
+        }
         return mComponent;
     }
 

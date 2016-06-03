@@ -9,34 +9,38 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
-
-import javax.inject.Inject;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class GreetingActivityTest {
 
-    @Inject
-    Greeting mGreeting;
     private ActivityController<GreetingActivity> activityController;
+    private Greeting greeting = mock(Greeting.class);
+
+    @ModuleOverride
+    protected SampleModule override = new SampleModule() {
+        @Override
+        public Greeting provideGreeting() {
+            return greeting;
+        }
+    };
 
     @Before
     public void setUp() {
         activityController = Robolectric.buildActivity(GreetingActivity.class);
-        ((TestSkimbotApplication) RuntimeEnvironment.application).component().inject(this);
     }
 
     @Test
     public void onCreateFormulatesAGreeting() {
-        when(mGreeting.formulate()).thenReturn("What did you say to me?");
+        when(greeting.formulate()).thenReturn("What did you say to me?");
 
         GreetingActivity activity = activityController.create().get();
         TextView view = (TextView) activity.findViewById(R.id.greeting_text);
@@ -46,7 +50,7 @@ public class GreetingActivityTest {
 
     @Test
     public void wat() {
-        when(mGreeting.formulate()).thenReturn("nothing");
+        when(greeting.formulate()).thenReturn("nothing");
 
         GreetingActivity activity = activityController.create().get();
         TextView view = (TextView) activity.findViewById(R.id.greeting_text);
